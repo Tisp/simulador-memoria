@@ -1,4 +1,4 @@
-from memory_file import MemoryFile
+from .memory_file import MemoryFile
 
 #classe memoria fisica em arquivo
 class PhysicMemoryFile(MemoryFile):

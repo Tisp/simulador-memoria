@@ -16,7 +16,7 @@ class Prompt():
 
         #Prompt fica rodando infinitamente
         while True:
-            command = input(self._promptName).split(' ')
+            command = input(self._promptName).rstrip().split(' ')
 
             #Comando invalido
             if command[0] not in self._validCommands:
