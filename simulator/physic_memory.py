@@ -1,3 +1,14 @@
+from memory_file import MemoryFile
+
+#classe memoria fisica em arquivo
+class PhysicMemoryFile(MemoryFile):
+    
+    _path = '/tmp/ep3.mem'
+
+    def __init__(self, memorySize):
+        MemoryFile.__init__(self, self._path, memorySize)
+
+#Classe manipula memoria e seus algoritmos
 class PhysicMemory():
 
     _totalMemory = None
@@ -5,7 +16,9 @@ class PhysicMemory():
     _bitMap = []
     _spaceManagerAlg = None #Qual algoritmo ira usar para alocar
     _lastPositionFit = 0 #Guarda a ultima posicao para o nextfit
-
+    _memoryFile = None
+    
+    #Construtor
     def __init__(self, totalMemory, alocationUnitSize, spaceManager):
         #total de memoria disponivel
         self._totalMemory = totalMemory
@@ -13,6 +26,8 @@ class PhysicMemory():
         self._alocationUnitSize = alocationUnitSize
         #prepara o bitmap
         self._bitMap = [False for x in range(self._totalMemory)]
+        #Cria a memoria em arquivo
+        self._memoryFile = PhysicMemoryFile(self._totalMemory)
 
         try:
             #define o algoritmo padrao da classe
@@ -20,10 +35,9 @@ class PhysicMemory():
             self._spaceManagerAlg = getattr(self, spaceManager)        
         except AttributeError:
             raise NotImplementedError("Algoritmo %s nao existe" % spaceManager)
-
     
     '''Algoritmo generico para bestfit e worstfit'''
-    def _maxMinFit(self, processSize, func=min):
+    def _maxMinFit(self, processSize, id, func=min):
         freeList = []
         fits = [] #guarda as posicoes que melhor se ajustaram
         processSize += processSize % self._alocationUnitSize
@@ -37,12 +51,17 @@ class PhysicMemory():
             else:
                 freeList = []
         
+        
         #Pega a menor lista em fits
-        for x in func(fits):
+        freePos = func(fits)
+        for x in freePos:
             self._bitMap[x] = True
 
+        #Escreve na memoria fisica
+        self._memoryFile.setIdMemoryPosition(id, freePos[0], freePos[-1])    
+
     '''Algoritmo generico para firstFit e nextFit'''
-    def _positionFit(self, processSize, start=0):
+    def _positionFit(self, processSize, id, start=0):
         freeList = []
         #Ja deixa o processo com o tamanho para alocation size2
         processSize += processSize % self._alocationUnitSize
@@ -55,24 +74,28 @@ class PhysicMemory():
                     for x in freeList:
                         self._bitMap[x] = True
                     self._lastPositionFit = m % self._totalMemory
+                    #Escreve na memoria fisica
+                    self._memoryFile.setIdMemoryPosition(id, freeList[0], freeList[-1]) 
             else:
                 freeList = [] #Zera a lista pois nao tem espacoa contiguo livre
+            
 
     #Imprime a memoria 
     def log(self):
         print([ 1 if x else 0 for x in self._bitMap ])
+        #print(self._memoryFile.readMemory())
 
-    def newProcess(self, processSize):  
-        self._spaceManagerAlg(processSize)
+    def newProcess(self, processSize, id):  
+        self._spaceManagerAlg(processSize, id)
 
-    def firstFit(self, processSize, start=0):
-        self._positionFit(processSize, 0)
+    def firstFit(self, processSize, id):
+        self._positionFit(processSize, id, 0)
 
-    def nextFit(self, processSize):
-        self._positionFit(processSize, self._lastPositionFit)
+    def nextFit(self, processSize, id):
+        self._positionFit(processSize, id, self._lastPositionFit)
 
-    def bestFit(self, processSize):
-        self._maxMinFit(processSize, min)
+    def bestFit(self, processSize, id):
+        self._maxMinFit(processSize, id, min)
 
-    def worstFit(self, processSize):
-       self._maxMinFit(processSize, max)
+    def worstFit(self, processSize, id):
+       self._maxMinFit(processSize, id, max)
