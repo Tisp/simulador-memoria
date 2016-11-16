@@ -1,3 +1,4 @@
+#Classe para escrever a memoria em arquivo
 class MemoryFile():
 
     _path = None
