@@ -1,5 +1,5 @@
-from tracefile import Tracefile
-from simulation import Simulation
+from .tracefile import Tracefile
+from .simulation import Simulation
 
 
 class Prompt():
@@ -61,12 +61,7 @@ class Prompt():
                
     def promptHelp(self):
         print('Help!!!!')
-            
 
-
-Prompt()
-
-    
     
 
 

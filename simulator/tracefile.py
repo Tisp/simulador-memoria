@@ -1,5 +1,5 @@
 import os
-from util import listPairs
+from .util import listPairs
 
 class Tracefile():
         
