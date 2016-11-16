@@ -38,7 +38,24 @@ class PhysicMemory():
         self.firstFit(processSize, self._lastPositionFit)
 
     def bestFit(self, processSize):
-        pass
+        freeList = []
+        fits = [] #guarda as posicoes que melhor se ajustaram
+        processSize += processSize % self._alocationUnitSize
+
+        for m in range(0, self._totalMemory):
+            if not self._bitMap[m]:
+                freeList.append(m)
+                if len(freeList) == processSize:
+                    fits.append(freeList)
+                    freeList = []
+            else:
+                freeList = []
+        
+        #Pega a menor lista em fits
+        for x in min(fits):
+            self._bitMap[x] = True
+
+
 
     def worstFit(self, processSize):
         pass
@@ -48,7 +65,7 @@ class PhysicMemory():
 
 
 pm = PhysicMemory(10, 3)
-pm.nextFit(4)
+pm.bestFit(4)
 pm.log()
 pm.firstFit(1)
 pm.log()
