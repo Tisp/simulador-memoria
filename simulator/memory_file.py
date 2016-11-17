@@ -1,10 +1,11 @@
+from array import array
 #Classe para escrever a memoria em arquivo
 class MemoryFile():
 
     _path = None
     _file = None
     _memorySize = None
-    _EMPTY_VALUE_ = 255 #Define um valor para vazio
+    _EMPTY_VALUE_ = -1 #Define um valor para vazio
 
     def __init__(self, path, memorySize):
         self._path = path
@@ -28,7 +29,9 @@ class MemoryFile():
     def writeMemory(self, memoryList):
         #Retorna a posicao inicial do arquivo
         self._file.seek(0)
-        self._file.write(bytes(memoryList))
+        '''Utilizando tamanhos de 4 bytes, entao arquivo ficara com 4 * maxMemory 
+        https://docs.python.org/3/library/array.html '''
+        self._file.write(array('i', memoryList).tostring())
 
     def readMemory(self):
         #Retorna a posicao inicial do arquivo
