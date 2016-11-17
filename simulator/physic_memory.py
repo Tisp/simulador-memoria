@@ -1,4 +1,4 @@
-from .memory_file import MemoryFile
+from memory_file import MemoryFile
 
 #classe memoria fisica em arquivo
 class PhysicMemoryFile(MemoryFile):
@@ -25,7 +25,7 @@ class PhysicMemory():
         #unidade de alocacao 
         self._alocationUnitSize = alocationUnitSize
         #prepara o bitmap
-        self._bitMap = [False for x in range(self._totalMemory)]
+        self._bitMap = [False] * self._totalMemory
         #Cria a memoria em arquivo
         self._memoryFile = PhysicMemoryFile(self._totalMemory)
 
@@ -83,10 +83,19 @@ class PhysicMemory():
     #Imprime a memoria 
     def log(self):
         print([ 1 if x else 0 for x in self._bitMap ])
-        #print(self._memoryFile.readMemory())
+        print(self._memoryFile.readMemory())
 
     def newProcess(self, processSize, id):  
         self._spaceManagerAlg(processSize, id)
+
+    #remove o processo da memoria
+    def removeProcess(self, id):
+        memoryFile = self._memoryFile.readMemory()
+        for idx, val in enumerate(memoryFile):
+            if val == id:
+                self._bitMap[idx] = False
+                memoryFile[idx] = -1
+        self._memoryFile.writeMemory(memoryFile)
 
     def firstFit(self, processSize, id):
         self._positionFit(processSize, id, 0)

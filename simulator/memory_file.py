@@ -31,12 +31,20 @@ class MemoryFile():
         self._file.seek(0)
         '''Utilizando tamanhos de 4 bytes, entao arquivo ficara com 4 * maxMemory 
         https://docs.python.org/3/library/array.html '''
-        self._file.write(array('i', memoryList).tostring())
+        self._file.write(array('i', memoryList).tobytes())
 
     def readMemory(self):
         #Retorna a posicao inicial do arquivo
         self._file.seek(0)
-        return list(self._file.read())
-
+        mem = []
+        b = self._file.read(1)
+        while b: 
+            mem.append(int.from_bytes(b, byteorder='big', signed=True))
+            #tamnho dos valores e de 4 bytes, continuar lendo ate 4
+            i = 0
+            while i != 4:
+                b = self._file.read(1)
+                i+=1
+        return mem
 
 

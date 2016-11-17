@@ -13,7 +13,7 @@ class VirtualMemory():
     _totalMemory = None
     _alocationUnitSize = None
     _memoryFile = None
-    _page = { 'pid': -1, 'R': 0, 'M': 0, inMemory: False }
+    _page = { 'pid': -1, 'R': 0, 'M': 0, 'inMemor': False }
 
     def __init__(self, totalMemory, alocationUnitSize):
         self._totalMemory = totalMemory
@@ -24,7 +24,10 @@ class VirtualMemory():
     
     def log(self):
         print([p['pid'] for p in self._memoryList])
+        print(self._memoryFile.readMemory()) 
 
         
 
     
+vm = VirtualMemory(100, 4)
+vm.log()
