@@ -55,7 +55,7 @@ class Prompt():
     def _startSimulation(self, interval):
 
         if self._tracefile is not None and self._freeSpaceAlg is not None and self._pageSubsAlg is not None:
-           Simulation(self._tracefile, self._freeSpaceAlg, self._pageSubsAlg, interval)
+           Simulation(self._tracefile, self._freeSpaceAlg, self._pageSubsAlg, interval).run()
         else:
             self.promptHelp()
                

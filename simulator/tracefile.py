@@ -46,9 +46,9 @@ class Tracefile():
                            'memory': [] }
 
                 process['t0'], process['nome'], \
-                process['tf'], process['b'] = process_data[0:4]
+                process['tf'], process['b'] = map(lambda t: int(t) if t.isnumeric() else t, process_data[0:4])
 
-                process['memory'] = listPairs(process_data[4:])
+                process['memory'] = listPairs(list(map(int, process_data[4:])))                        
 
                 #Verifico se os dados estao corretos
                 if process['memory'] is None:

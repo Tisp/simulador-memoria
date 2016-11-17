@@ -1,4 +1,4 @@
-from memory_file import MemoryFile
+from .memory_file import MemoryFile
 
 #classe memoria fisica em arquivo
 class PhysicMemoryFile(MemoryFile):
@@ -85,11 +85,12 @@ class PhysicMemory():
         print([ 1 if x else 0 for x in self._bitMap ])
         print(self._memoryFile.readMemory())
 
-    def newProcess(self, processSize, id):  
+    #Aloca na memoria fisica um processo utilizando o algoritmo definido
+    def alloc(self, processSize, id):  
         self._spaceManagerAlg(processSize, id)
 
     #remove o processo da memoria
-    def removeProcess(self, id):
+    def free(self, id):
         memoryFile = self._memoryFile.readMemory()
         for idx, val in enumerate(memoryFile):
             if val == id:
