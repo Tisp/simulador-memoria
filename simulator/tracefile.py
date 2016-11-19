@@ -3,7 +3,7 @@ from .util import listPairs
 
 class Tracefile():
         
-    maxPhysicMemory = None
+    maxPhysicalMemory = None
     maxVirtualMemory = None
     alocationSizeUnit = None
     pageSize = None
@@ -32,7 +32,7 @@ class Tracefile():
             raise IOError('Arquivo trace errado, veja a linha 0')
         
         #Captura os primeiros dados do arquivo trace
-        self.maxPhysicMemory, self.maxVirtualMemory, \
+        self.maxPhysicalMemory, self.maxVirtualMemory, \
         self.alocationSizeUnit, self.pageSize = map(int, firstLineData)
     
     #pega os dados da 2 linha em diante, dados dos processos

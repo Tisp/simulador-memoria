@@ -1,7 +1,7 @@
 from .memory_file import MemoryFile
 
 #classe memoria fisica em arquivo
-class PhysicMemoryFile(MemoryFile):
+class PhysicalMemoryFile(MemoryFile):
     
     _path = '/tmp/ep3.mem'
 
@@ -9,7 +9,7 @@ class PhysicMemoryFile(MemoryFile):
         MemoryFile.__init__(self, self._path, memorySize)
 
 #Classe manipula memoria e seus algoritmos
-class PhysicMemory():
+class PhysicalMemory():
 
     _totalMemory = None
     _alocationUnit = None
@@ -27,7 +27,7 @@ class PhysicMemory():
         #prepara o bitmap
         self._bitMap = [False] * self._totalMemory
         #Cria a memoria em arquivo
-        self._memoryFile = PhysicMemoryFile(self._totalMemory)
+        self._memoryFile = PhysicalMemoryFile(self._totalMemory)
 
         try:
             #define o algoritmo padrao da classe
@@ -51,7 +51,6 @@ class PhysicMemory():
             else:
                 freeList = []
         
-        
         #Pega a menor lista em fits
         freePos = func(fits)
         for x in freePos:
@@ -59,6 +58,12 @@ class PhysicMemory():
 
         #Escreve na memoria fisica
         self._memoryFile.setIdMemoryPosition(id, freePos[0], freePos[-1])    
+
+        if freePos:
+            #Retorna base e limite
+            return (freePos[0], freePos[-1])
+        else:
+            return None
 
     '''Algoritmo generico para firstFit e nextFit'''
     def _positionFit(self, processSize, id, start=0):
@@ -78,6 +83,12 @@ class PhysicMemory():
                     self._memoryFile.setIdMemoryPosition(id, freeList[0], freeList[-1]) 
             else:
                 freeList = [] #Zera a lista pois nao tem espacoa contiguo livre
+
+        if freeList:
+            #Retorna base e limite
+            return (freeList[0], freeList[-1])
+        else:
+            return None
             
 
     #Imprime a memoria 
@@ -87,7 +98,7 @@ class PhysicMemory():
 
     #Aloca na memoria fisica um processo utilizando o algoritmo definido
     def alloc(self, processSize, id):  
-        self._spaceManagerAlg(processSize, id)
+        return self._spaceManagerAlg(processSize, id)
 
     #remove o processo da memoria
     def free(self, id):
@@ -99,13 +110,13 @@ class PhysicMemory():
         self._memoryFile.writeMemory(memoryFile)
 
     def firstFit(self, processSize, id):
-        self._positionFit(processSize, id, 0)
+        return self._positionFit(processSize, id, 0)
 
     def nextFit(self, processSize, id):
-        self._positionFit(processSize, id, self._lastPositionFit)
+        return self._positionFit(processSize, id, self._lastPositionFit)
 
     def bestFit(self, processSize, id):
-        self._maxMinFit(processSize, id, min)
+        return self._maxMinFit(processSize, id, min)
 
     def worstFit(self, processSize, id):
-       self._maxMinFit(processSize, id, max)
+       return self._maxMinFit(processSize, id, max)

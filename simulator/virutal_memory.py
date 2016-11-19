@@ -8,14 +8,15 @@ class VirtualMemoryFile(MemoryFile):
         MemoryFile.__init__(self, self._path, memorySize)
 
 class VirtualMemory():
-    
     _memoryList = None
     _totalMemory = None
     _pageSize = None
     _memoryFile = None
     _alocationUnitSize = None
     _subsPageAlg = None
-    _page = { 'pid': -1, 'R': 0, 'M': 0, 'inMemory': False }
+    _page = {'pid': -1, 'R': 0, 'M': 0, 'inMemory': False}
+    _pageTable = {}
+
 
     def __init__(self, totalMemory, pageSize, alocationUnitSize, subsPageAlg):
         self._totalMemory = totalMemory
@@ -25,12 +26,26 @@ class VirtualMemory():
         self._memoryList = [self._page] * int(totalMemory / self._alocationUnitSize)
         self._memoryFile = VirtualMemoryFile(totalMemory)
 
-    
     def log(self):
         print([p['pid'] for p in self._memoryList])
-        print(self._memoryFile.readMemory()) 
+        #print(self._memoryFile.readMemory()) 
 
-
-    def newProcess():
+    def alloc(self):
         pass
 
+    def free(self):
+        pass
+
+    def optimal(self, pid, processes):
+        pass
+    
+    def secondChance(self, pid, processes):
+        pass
+
+    def clock(self, pid):
+        pass
+    
+    def LRU(self):
+        pass
+        
+        

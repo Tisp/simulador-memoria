@@ -1,10 +1,10 @@
 from time import time
-from .physic_memory import PhysicMemory
+from .physical_memory import PhysicalMemory
 from .virutal_memory import VirtualMemory
 
 class Simulation():
 
-    _physicMemory = None
+    _physicalMemory = None
     _virtualMemory = None
     _startTime = None
     _tracefile = None
@@ -15,7 +15,7 @@ class Simulation():
         self._tracefile = tracefile
 
         #Inicia memoria fisica
-        self._physicMemory = PhysicMemory(tracefile.maxPhysicMemory,
+        self._physicalMemory = PhysicalMemory(tracefile.maxPhysicalMemory,
                                 tracefile.alocationSizeUnit,
                                 self.num2FreeSpaceAlg(int(freeSpaceAlg)))
         #Inicia a memoria virtual 
