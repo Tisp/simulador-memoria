@@ -19,14 +19,20 @@ class Simulation():
                                 tracefile.alocationSizeUnit,
                                 self.num2FreeSpaceAlg(int(freeSpaceAlg)))
         #Inicia a memoria virtual 
-        self._virtualMemory = VirtualMemory(tracefile.maxVirtualMemory,
+        self._virtualMemory = VirtualMemory(
+                                self._physicalMemory,
+                                tracefile.maxVirtualMemory,
                                 tracefile.pageSize,
                                 tracefile.alocationSizeUnit,
                                 self.num2SubsPageAlg(int(pageSubsAlg)))
 
     def run(self):
-        startTime = time()
-        print(startTime)
+        #posicao, pid, size
+        self._virtualMemory.alloc(1, 5, 3)
+        self._virtualMemory.log()
+        self._virtualMemory.alloc(5, 10, 2)
+        self._virtualMemory.log()
+        print(self._virtualMemory._pageFault)
 
     def num2FreeSpaceAlg(self, num):
         alglist = [None, 'firstFit', 'nextFit', 'bestFit', 'worstFit']

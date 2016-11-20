@@ -68,8 +68,8 @@ class PhysicalMemory():
     '''Algoritmo generico para firstFit e nextFit'''
     def _positionFit(self, processSize, id, start=0):
         freeList = []
-        #Ja deixa o processo com o tamanho para alocation size2
-        processSize += processSize % self._alocationUnitSize
+        #Ja deixa o processo com o tamanho para alocation size
+        processSize += (processSize % self._alocationUnitSize)
         #Percore o vetor bitmap em tamnhos de unit size
         for m in range(start, self._totalMemory):
             #Espaco livre
@@ -93,20 +93,20 @@ class PhysicalMemory():
 
     #Imprime a memoria 
     def log(self):
+        print("Memoria fisica:")
         print([ 1 if x else 0 for x in self._bitMap ])
-        print(self._memoryFile.readMemory())
+        #print(self._memoryFile.readMemory())
 
     #Aloca na memoria fisica um processo utilizando o algoritmo definido
     def alloc(self, processSize, id):  
         return self._spaceManagerAlg(processSize, id)
 
     #remove o processo da memoria
-    def free(self, id):
+    def free(self, start, end):
         memoryFile = self._memoryFile.readMemory()
-        for idx, val in enumerate(memoryFile):
-            if val == id:
-                self._bitMap[idx] = False
-                memoryFile[idx] = -1
+        for idx in range(start, end):
+            self._bitMap[idx] = False
+            memoryFile[idx] = -1
         self._memoryFile.writeMemory(memoryFile)
 
     def firstFit(self, processSize, id):
