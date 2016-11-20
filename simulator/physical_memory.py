@@ -5,7 +5,7 @@ class PhysicalMemoryFile(MemoryFile):
     
     _path = '/tmp/ep3.mem'
 
-    def __init__(self, memorySize):
+    def __init__(self, memorySize): 
         MemoryFile.__init__(self, self._path, memorySize)
 
 #Classe manipula memoria e seus algoritmos
@@ -31,7 +31,6 @@ class PhysicalMemory():
 
         try:
             #define o algoritmo padrao da classe
-            print('Usando o algoritmo %s' % (spaceManager))
             self._spaceManagerAlg = getattr(self, spaceManager)        
         except AttributeError:
             raise NotImplementedError("Algoritmo %s nao existe" % spaceManager)
@@ -50,7 +49,6 @@ class PhysicalMemory():
                     freeList = []
             else:
                 freeList = []
-        
         #Pega a menor lista em fits
         freePos = func(fits)
         for x in freePos:
@@ -93,7 +91,6 @@ class PhysicalMemory():
 
     #Imprime a memoria 
     def log(self):
-        print("Memoria fisica:")
         print([ 1 if x else 0 for x in self._bitMap ])
         #print(self._memoryFile.readMemory())
 
