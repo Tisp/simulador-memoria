@@ -60,8 +60,13 @@ class Prompt():
             self.promptHelp()
                
     def promptHelp(self):
-        print('Help!!!!')
-
+        print('Simulador de memoria')
+        print('Tente:')
+        print('carrega <tracefile>')
+        print('espaco <algoritmo>')
+        print('substitui <algoritmo>')
+        print('executa <intervalo>')
+        print('sair')
     
 
 
